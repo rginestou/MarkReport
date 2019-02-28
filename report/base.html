@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="report.css">
+  <link rel="stylesheet" href="prism.css">
+  <title>Report</title>
+</head>
+
+<body>
+  ${self.body()}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      messageStyle: "none",
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    })
+  </script>
+  <script src="prism.js"></script>
+</body>
+
+
+</html>
