@@ -1,8 +1,10 @@
-# h1 ?
+# Report example
 
-## Salut
+<!-- toc -->
 
-Text _bold_ **italic**
+## Table of contents
+
+<!-- !toc -->
 
 <!-- columns -->
 
@@ -16,26 +18,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucib
 Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
 Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 
-Math mode $x \times y$:
+Writting basic $\LaTeX$ equations is supported:
 
-$$\sum i+j=0$$
+$$3x+y=7$$
+
+Syntax highlighting as well!
 
 ```go
 var hasher = md5.New()
 hasher.Write(pass)
 hash := hasher.Sum(nil)
 ```
-
-PRE mode:
-
-<pre><code class="language-go">package main
-
-import &quot;fmt&quot;
-
-func main() {
-	fmt.Println(&quot;Hello, World!&quot;)
-}
-</code></pre>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
 Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
@@ -67,8 +60,6 @@ Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula sed, vehicula sed augue. Cras eget ante turpis.
 
-$\int x^2$
-
 <!-- !section -->
 
 <!-- section -->
@@ -99,8 +90,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidun
 
 135€
 
-* Hey
-* You
+* Item 1
+* Item 2
 
 <!-- !section -->
 
@@ -110,8 +101,19 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidun
 
 175€
 
-* Hey
-* You
+* Item 1
+* Item 2
+
+<!-- !section -->
+
+<!-- section -->
+
+#### Offer #3
+
+195€
+
+* Item 1
+* Item 2
 
 <!-- !section -->
 

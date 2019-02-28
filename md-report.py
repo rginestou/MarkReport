@@ -101,6 +101,6 @@ recompile(None)
 watch_manager = pyinotify.WatchManager()
 event_notifier = pyinotify.Notifier(watch_manager, recompile)
 
-watch_manager.add_watch(os.path.abspath("."), pyinotify.ALL_EVENTS)
+watch_manager.add_watch(os.path.abspath("."), pyinotify.ALL_EVENTS, rec=True)
 event_notifier.loop()
 driver.quit()
