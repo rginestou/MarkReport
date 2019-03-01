@@ -213,7 +213,7 @@ article#cover address {
     color: white;
     flex: 1 50%;
     margin: 0 -2cm;
-    padding: 1cm 3cm;
+    padding: 1.5cm 3cm;
     white-space: pre-wrap;
 }
 
@@ -406,6 +406,7 @@ article.offers section ul li:not(:last-of-type) {
 
 article.offers section p {
     background: #45aaf2;
+    color: white;
     display: block;
     font-size: 15pt;
     font-weight: 700;
@@ -427,131 +428,143 @@ article.chapter h2 {
     color: white;
 }
 
-article section.level {
+article.specs section {
     display: flex;
     flex-wrap: wrap;
     margin: 1cm 0;
 }
 
-article section.level h4 {
+article.specs section h4 {
     border-top: 1pt solid;
     flex: 1 25%;
     margin: 0;
 }
 
-article section.level h4+* {
+article.specs section h4+* {
     flex: 1 75%;
     margin: 0;
     padding-left: .5cm;
 }
 
-article section.level p {
+article.specs section p {
     text-align: justify;
 }
 
-article section.level ul {
+article.specs section ul {
     line-height: 2;
     list-style: none;
 }
 
-article.typography section#small-caps p {
+article.specs section#small-caps p {
     font-variant: small-caps;
 }
 
-article.typography section#ligatures dl {
+article.specs section#ligatures dl {
     display: flex;
     flex-wrap: wrap;
 }
 
-article.typography section#ligatures dl dt {
+article.specs section#ligatures dl dt {
     font-weight: 400;
     width: 30%;
 }
 
-article.typography section#ligatures dl dd {
+article.specs section#ligatures dl dd {
     flex: 1 100%;
     margin: 0;
     padding: 0;
 }
 
-article.typography section#ligatures .none {
+article.specs section#ligatures .none {
     font-variant-ligatures: none;
 }
 
-article.typography section#ligatures .common {
+article.specs section#ligatures .common {
     font-variant-ligatures: common-ligatures;
 }
 
-article.typography section#ligatures .discretionary {
+article.specs section#ligatures .discretionary {
     font-variant-ligatures: discretionary-ligatures;
 }
 
-article.typography section#ligatures .contextual {
+article.specs section#ligatures .contextual {
     font-variant-ligatures: contextual;
 }
 
-article.typography section#numbers dl {
+article.specs section#numbers dl {
     display: flex;
     flex-wrap: wrap;
 }
 
-article.typography section#numbers dl dt {
+article.specs section#numbers dl dt {
     font-weight: 400;
     width: 30%;
 }
 
-article.typography section#numbers dl dd {
+article.specs section#numbers dl dd {
     flex: 1 100%;
     margin: 0;
     padding: 0;
 }
 
-article.typography section#numbers #fractions {
+article.specs section#numbers #fractions {
     font-variant-numeric: diagonal-fractions;
 }
 
-article.typography section#numbers #ordinals {
+article.specs section#numbers #ordinals {
     font-variant-numeric: ordinal;
 }
 
-article.typography section#numbers #slashed {
+article.specs section#numbers #slashed {
     font-variant-numeric: slashed-zero;
 }
 
-article.typography section#numbers #super {
+article.specs section#numbers #super {
     font-variant-position: super;
 }
 
-article.typography section#numbers #sub {
+article.specs section#numbers #sub {
     font-variant-position: sub;
 }
 
-article.typography section#figures dl {
+article.specs section#figures dl {
     columns: 4;
 }
 
-article.typography section#figures dl dt {
+article.specs section#figures dl dt {
     font-weight: 400;
 }
 
-article.typography section#figures dl dd {
+article.specs section#figures dl dd {
     display: flex;
     margin: 0;
     padding: 0;
 }
 
-article.typography section#figures dl dd ul {
+article.specs section#figures dl dd ul {
     padding: 0 1em 0 0;
 }
 
-article.typography section#figures #oldstyle {
+article.specs section#figures #oldstyle {
     font-variant-numeric: oldstyle-nums;
 }
 
-article.typography section#figures #tabular {
+article.specs section#figures #tabular {
     font-variant-numeric: tabular-nums;
 }
 
-article.typography section#figures #old-tabular {
+article.specs section#figures #old-tabular {
     font-variant-numeric: oldstyle-nums tabular-nums;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 0.5px solid rgb(88, 88, 88);
+    padding: 5px;
 }

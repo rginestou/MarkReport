@@ -13,9 +13,22 @@ import pyinotify
 from distutils.dir_util import copy_tree
 from tempfile import gettempdir
 from time import time
-from sys import stdout
+from sys import stdout, stderr
 import glob, os
 import re
+
+# Check directory
+
+ok = False
+for file in os.listdir("."):
+    if file.endswith(".md"):
+        ok = True
+        break
+if not ok:
+    stderr.write("No markdown file found in the current folder")
+    exit(1)
+
+script_path = os.path.dirname(os.path.realpath(__file__))
 
 # Temp dir
 
@@ -23,7 +36,6 @@ timestamp = str(int(time()))
 timestamp = "1111"
 tmp_dir = gettempdir() + "/" + timestamp + "_md-report/"
 os.makedirs(tmp_dir, exist_ok=True)
-
 
 # Headless browser
 
@@ -44,8 +56,11 @@ def recompile(notifier):
     stdout.write("\rBuilding the PDF file...")
     stdout.flush()
 
-    copy_tree("report", tmp_dir)
-    copy_tree("example", tmp_dir)
+    files = glob.glob(tmp_dir + '/*.md')
+    for f in files:
+        os.remove(f)
+    copy_tree(script_path + "/src", tmp_dir)
+    copy_tree(".", tmp_dir)
 
     # Base HTML Template
 
@@ -60,7 +75,7 @@ def recompile(notifier):
     with open(md_file_name, "r") as md_file:
         md = md_file.readlines()
 
-    os.system("./md-parsing " + tmp_dir)
+    os.system(script_path + "/md-parsing " + tmp_dir)
 
     # Interpret JS code
 

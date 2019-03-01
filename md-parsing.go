@@ -20,18 +20,18 @@ type Data struct {
 }
 
 var commentToHTML = map[string]string{
-	"columns":     "<article class='columns'>\n",
-	"!columns":    "</article>\n",
-	"items":       "<article class='items'>\n",
-	"!items":      "</article>\n",
-	"offers":      "<article class='offers'>\n",
-	"!offers":     "</article>\n",
-	"chapter":     "<article class='chapter'>\n",
-	"!chapter":    "</article>\n",
-	"typography":  "<article class='typography'>\n",
-	"!typography": "</article>\n",
-	"section":     "<section>\n",
-	"!section":    "</section>\n",
+	"columns":  "<article class='columns'>\n",
+	"!columns": "</article>\n",
+	"items":    "<article class='items'>\n",
+	"!items":   "</article>\n",
+	"offers":   "<article class='offers'>\n",
+	"!offers":  "</article>\n",
+	"chapter":  "<article class='chapter'>\n",
+	"!chapter": "</article>\n",
+	"specs":    "<article class='specs'>\n",
+	"!specs":   "</article>\n",
+	"section":  "<section>\n",
+	"!section": "</section>\n",
 }
 
 func main() {

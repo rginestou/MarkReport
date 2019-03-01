@@ -128,15 +128,21 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidun
 
 <!-- !offers -->
 
+### Table
+
+| Cell1 | Cell2 | Cell3 | Cell4 |
+|-------|-------|-------|-------|
+| Content1 | Content  | Content3 | Content4 |
+
 <!-- chapter -->
 
 ## This is a chapter of a new section
 
 <!-- !chapter -->
 
-<!-- typography -->
+<!-- specs -->
 
-## About some typography features
+## About some features
 
 <!-- section -->
 
@@ -154,4 +160,4 @@ Lorem ipsum dolor _sit amet, consectetur adipiscing elit._ Ut pulvinar dolor **a
 
 <!-- !section -->
 
-<!-- !typography -->
+<!-- !specs -->
