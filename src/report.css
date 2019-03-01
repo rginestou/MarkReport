@@ -65,6 +65,7 @@
 @page {
     @top-left {
         background: #45aaf2;
+        color: white;
         content: counter(page);
         height: 1cm;
         text-align: center;

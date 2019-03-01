@@ -12,7 +12,7 @@ import pyinotify
 
 from distutils.dir_util import copy_tree
 from tempfile import gettempdir
-from time import time
+from time import time, sleep
 from sys import stdout, stderr
 import glob, os
 import re
@@ -33,7 +33,6 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 # Temp dir
 
 timestamp = str(int(time()))
-timestamp = "1111"
 tmp_dir = gettempdir() + "/" + timestamp + "_md-report/"
 os.makedirs(tmp_dir, exist_ok=True)
 
@@ -46,7 +45,7 @@ driver.set_page_load_timeout(2)
 
 prev_compile_time = 0
 def recompile(notifier):
-    if notifier is not None and notifier.maskname != "IN_MODIFY":
+    if notifier is not None and (notifier.maskname != "IN_MODIFY" or notifier.pathname.endswith(".pdf")):
         return
     global prev_compile_time
     if time() - prev_compile_time < 1:
@@ -81,6 +80,7 @@ def recompile(notifier):
 
     html_file_name = tmp_dir + "output.html"
     driver.get("file:///" + html_file_name)
+    sleep(1)
     elem = driver.find_element_by_xpath("//*")
     interpreted_html = elem.get_attribute("outerHTML")
 

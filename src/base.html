@@ -21,13 +21,23 @@
 <body>
   {{template "content"}}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <!-- messageStyle: "none", -->
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-      messageStyle: "none",
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-    })
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+      },
+      "HTML-CSS": {
+        fonts: ["TeX"],
+        scale: 85,
+      }
+    });
   </script>
+  <script src="MathJax.js"></script>
   <script src="prism.js"></script>
 </body>
 

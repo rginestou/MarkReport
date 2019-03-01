@@ -31,6 +31,8 @@ Writting basic $\LaTeX$ equations is supported:
 
 $$3x+y=7$$
 
+$$\sum_{i=1}^n i = \frac{n(n+1)}{2}$$
+
 Syntax highlighting as well!
 
 ```go
