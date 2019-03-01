@@ -155,27 +155,6 @@ html {
     line-height: 1.5;
 }
 
-h1.cover {
-    color: #393939;
-    font-family: Lato;
-    font-size: 44pt;
-    font-weight: 400;
-    text-transform: uppercase;
-    margin: 12cm 3cm 0 3cm;
-    /* page: no-chapter; */
-    width: 100%;
-}
-
-h2.cover {
-    color: #8b8b8b;
-    font-family: Lato;
-    font-size: 30pt;
-    font-weight: 400;
-    margin: 0.8cm 3cm 0 3cm;
-    /* page: no-chapter; */
-    width: 100%;
-}
-
 .doc-color {
     color: #45aaf2;
 }
@@ -209,16 +188,37 @@ article#cover {
     height: 297mm;
 }
 
+article#cover h1 {
+    color: #393939;
+    font-family: Lato;
+    font-size: 44pt;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin: 12cm 3cm 0 3cm;
+    /* page: no-chapter; */
+    width: 100%;
+}
+
+article#cover h2 {
+    color: #8b8b8b;
+    font-family: Lato;
+    font-size: 30pt;
+    font-weight: 400;
+    margin: 0.8cm 3cm 0 3cm;
+    /* page: no-chapter; */
+    width: 100%;
+}
+
 article#cover address {
-    background: #45aaf2;
+    color: white;
     flex: 1 50%;
     margin: 0 -2cm;
-    padding: 1cm 0;
+    padding: 1cm 3cm;
     white-space: pre-wrap;
 }
 
 article#cover address:first-of-type {
-    padding-left: 3cm;
+    padding-left: 6cm;
 }
 
 article#contents {

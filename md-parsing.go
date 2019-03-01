@@ -50,11 +50,13 @@ func main() {
 
 	var data Data
 	inCover := false
+	coverHTML := ""
 
 	mdContent, _ := ioutil.ReadFile(dir + "/" + mdFile)
-	html := string(blackfriday.Run(mdContent))
+	ext := blackfriday.CommonExtensions & ^blackfriday.Autolink
+	html := string(blackfriday.Run(mdContent, blackfriday.WithExtensions(ext)))
 
-	htmlOut := "{{define \"content\"}}"
+	htmlOut := "{{define \"content\"}}\n"
 	scanner := bufio.NewScanner(strings.NewReader(html))
 	re, _ := regexp.Compile(`<!--(.*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
@@ -62,8 +64,8 @@ func main() {
 		txt := scanner.Text()
 		if !inCover {
 			htmlOut += txt + "\n"
-		} else if len(txt) > 4 {
-			htmlOut += txt[:3] + " class='cover'" + txt[3:len(txt)] + "\n"
+		} else {
+			coverHTML += txt + "\n"
 		}
 
 		res := re.FindAllStringSubmatch(txt, -1)
@@ -79,8 +81,12 @@ func main() {
 		}
 
 		if comment == "!cover" {
-			htmlOut += "</article>\n"
+			coverHTML += "</article>\n"
 			inCover = false
+			coverHTML = strings.Replace(coverHTML, "<p>", "<address>\n", -1)
+			coverHTML = strings.Replace(coverHTML, "</p>", "\n</address>", -1)
+			coverHTML = strings.Replace(coverHTML, "\n\n", "\n", -1)
+			htmlOut += coverHTML
 			continue
 		}
 
@@ -96,11 +102,10 @@ func main() {
 		} else if res[0][1] == "cover" {
 			data.Cover = res[0][2]
 			inCover = true
-			htmlOut += "<article id='cover'>\n"
-			// htmlOut += "<h1>Salut</h1>\n"
+			coverHTML += "<article id='cover'>\n"
 		}
 	}
-	htmlOut += "{{end}}"
+	htmlOut += "{{end}}\n"
 
 	// Makdown HTML
 	f, _ := os.Create(dir + "/md-output.html")

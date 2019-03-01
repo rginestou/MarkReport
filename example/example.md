@@ -3,7 +3,13 @@
 
 # Report <span class="doc-color">example</span>
 
-## My not so long Subtitle
+WeasyPrint Company
+Boulevard Stalingrad
+Villeurbanne City France
+
+community@kozea.fr
++33 4 78 84 19 28
+https://community.kozea.fr
 
 <!-- !cover -->
 
