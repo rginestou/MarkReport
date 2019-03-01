@@ -60,10 +60,23 @@ func main() {
 	scanner := bufio.NewScanner(strings.NewReader(html))
 	re, _ := regexp.Compile(`<!--(.*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
+	reImg, _ := regexp.Compile(`<img src="([^\ ]+) =(\d*)?x(\d*)?`)
 	for scanner.Scan() {
 		txt := scanner.Text()
 		if !inCover {
-			htmlOut += txt + "\n"
+			// Test for image
+			res := reImg.FindAllStringSubmatch(txt, -1)
+			if len(res) != 0 {
+				width := res[0][2]
+				height := ""
+				if len(res) > 3 {
+					height = res[0][3]
+				}
+				htmlOut += replaceImage(res[0][1], width, height) + "\n"
+				continue
+			} else {
+				htmlOut += txt + "\n"
+			}
 		} else {
 			coverHTML += txt + "\n"
 		}
@@ -120,4 +133,12 @@ func main() {
 	t.ExecuteTemplate(w, "base", data)
 	w.Flush()
 	f.Close()
+}
+
+func replaceImage(src, width, height string) string {
+	h := ""
+	if height != "" {
+		h = "height:" + height + "px"
+	}
+	return "<img src='" + src + "' style='width:" + width + "px;" + h + "'>"
 }

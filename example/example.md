@@ -71,6 +71,8 @@ Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula sed, vehicula sed augue. Cras eget ante turpis.
 
+![](report-cover.jpg =200x)
+
 <!-- !section -->
 
 <!-- section -->

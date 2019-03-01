@@ -84,6 +84,7 @@ def recompile(notifier):
     elem = driver.find_element_by_xpath("//*")
     interpreted_html = elem.get_attribute("outerHTML")
 
+
     with open(html_file_name, "w") as html_out_file:
         html_out_file.write(interpreted_html)
 
