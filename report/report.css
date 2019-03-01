@@ -31,6 +31,37 @@
     src: url(FiraSans-Bold.otf);
 }
 
+@font-face {
+    font-family: Lato;
+    font-weight: 400;
+    src: url(Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    font-style: italic;
+    font-weight: 400;
+    src: url(Lato-Italic.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    font-weight: 300;
+    src: url(Lato-Light.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    font-weight: 100;
+    src: url(Lato-Hairline.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    font-weight: bold;
+    src: url(Lato-Bold.ttf);
+}
+
 @page {
     @top-left {
         background: #45aaf2;
@@ -82,12 +113,6 @@
     }
 }
 
-@page :first {
-    background: url(report-cover.jpg) no-repeat center;
-    background-size: cover;
-    margin: 0;
-}
-
 @page chapter {
     background: #45aaf2;
     margin: 0;
@@ -130,12 +155,29 @@ html {
     line-height: 1.5;
 }
 
-h1 {
-    color: #45aaf2;
-    font-size: 38pt;
-    margin: 5cm 2cm 0 2cm;
-    page: no-chapter;
+h1.cover {
+    color: #393939;
+    font-family: Lato;
+    font-size: 44pt;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin: 12cm 3cm 0 3cm;
+    /* page: no-chapter; */
     width: 100%;
+}
+
+h2.cover {
+    color: #8b8b8b;
+    font-family: Lato;
+    font-size: 30pt;
+    font-weight: 400;
+    margin: 0.8cm 3cm 0 3cm;
+    /* page: no-chapter; */
+    width: 100%;
+}
+
+.doc-color {
+    color: #45aaf2;
 }
 
 h2,

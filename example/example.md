@@ -1,10 +1,13 @@
-# Report example
+<!-- title Report Example -->
+<!-- cover cover2.svg -->
 
-<!-- toc -->
+# Report <span class="doc-color">example</span>
 
-## Table of contents
+## My not so long Subtitle
 
-<!-- !toc -->
+<!-- !cover -->
+
+<!-- toc Table of contents -->
 
 <!-- columns -->
 

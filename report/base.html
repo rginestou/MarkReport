@@ -1,3 +1,4 @@
+{{define "base"}}
 <!doctype html>
 <html>
 
@@ -5,11 +6,20 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="report.css">
   <link rel="stylesheet" href="prism.css">
-  <title>Report</title>
+  <title>{{.Title}}</title>
+  {{if .Cover}}
+  <style>
+    @page :first {
+      background: url({{.Cover}}) no-repeat center;
+      background-size: cover;
+      margin: 0;
+    }
+  </style>
+  {{end}}
 </head>
 
 <body>
-  ${self.body()}
+  {{template "content"}}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   <script type="text/x-mathjax-config">
@@ -21,5 +31,5 @@
   <script src="prism.js"></script>
 </body>
 
-
 </html>
+{{end}}

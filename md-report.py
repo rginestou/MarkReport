@@ -62,25 +62,10 @@ def recompile(notifier):
 
     os.system("./md-parsing " + tmp_dir)
 
-    md_html = ""
-    with open(tmp_dir + "/md-output.html", "r") as md_html_file:
-        md_html = md_html_file.read()
-
-    # Create HTML file
-
-    lookup = TemplateLookup()
-    lookup.put_string("base.html", base_html)
-    lookup.put_string("index.html", "<%inherit file='base.html'/>\n" + md_html)
-    index_template = lookup.get_template("index.html")
-    html = index_template.render()
-
-    html_file_name = tmp_dir + "output.html"
-    with open(html_file_name, "w") as html_out_file:
-        html_out_file.write(html)
-
     # Interpret JS code
 
-    driver.get("file:///" + tmp_dir + "output.html")
+    html_file_name = tmp_dir + "output.html"
+    driver.get("file:///" + html_file_name)
     elem = driver.find_element_by_xpath("//*")
     interpreted_html = elem.get_attribute("outerHTML")
 
