@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from weasyprint import HTML
-from markdown2 import Markdown
 from mako.template import Template
 from mako.lookup import TemplateLookup
 

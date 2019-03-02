@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -150,7 +149,6 @@ func main() {
 		}
 	}
 
-	fmt.Println(toc)
 	tocHTML := ""
 	if tocName != "" {
 		tocHTML += "<article id='contents'>\n"
