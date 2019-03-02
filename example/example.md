@@ -53,8 +53,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucib
 Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
 Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 
-<!-- <img src="report-cover.jpg" class="w25"/> -->
-
 <!-- !section -->
 
 <!-- !columns -->
