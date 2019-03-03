@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 
+# Command line flags
+
+import argparse
+
+parser = argparse.ArgumentParser(description='Converts Markdown to elegant PDF reports')
+parser.add_argument('--basic', dest='basic', action='store_true',
+    help='Do not enrich HTML with LaTeX and syntax highlighting (faster builds)')
+parser.add_argument('--watch', dest='watch', action='store_true',
+    help='Watch the current folder for changes and rebuild automatically')
+parser.add_argument('--quiet', dest='quiet', action='store_true',
+    help='Do not output any information')
+parser.set_defaults(watch=False)
+args = parser.parse_args()
+
 from weasyprint import HTML
-from mako.template import Template
-from mako.lookup import TemplateLookup
-
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-
-import pyinotify
 
 from distutils.dir_util import copy_tree
 from tempfile import gettempdir
 from time import time, sleep
 from sys import stdout, stderr
-import glob, os
-import re
+import re, glob, os
 
 # Check directory
 
@@ -37,10 +43,14 @@ os.makedirs(tmp_dir, exist_ok=True)
 
 # Headless browser
 
-options = Options()
-options.headless = True
-driver = webdriver.Firefox(options=options)
-driver.set_page_load_timeout(2)
+if not args.basic:
+    from selenium import webdriver
+    from selenium.webdriver.firefox.options import Options
+
+    options = Options()
+    options.headless = True
+    driver = webdriver.Firefox(options=options)
+    driver.set_page_load_timeout(2)
 
 prev_compile_time = 0
 def recompile(notifier):
@@ -51,8 +61,9 @@ def recompile(notifier):
         return
     prev_compile_time = time()
 
-    stdout.write("\rBuilding the PDF file...")
-    stdout.flush()
+    if not args.quiet:
+        stdout.write("\rBuilding the PDF file...")
+        stdout.flush()
 
     files = glob.glob(tmp_dir + '/*.md')
     for f in files:
@@ -74,17 +85,18 @@ def recompile(notifier):
         md = md_file.readlines()
 
     os.system(script_path + "/md-parsing " + tmp_dir)
+    html_file_name = tmp_dir + "output.html"
 
     # Interpret JS code
 
-    html_file_name = tmp_dir + "output.html"
-    driver.get("file:///" + html_file_name)
-    sleep(2)
-    elem = driver.find_element_by_xpath("//*")
-    interpreted_html = elem.get_attribute("outerHTML")
+    if not args.basic:
+        driver.get("file:///" + html_file_name)
+        sleep(2)
+        elem = driver.find_element_by_xpath("//*")
+        interpreted_html = elem.get_attribute("outerHTML")
 
-    with open(html_file_name, "w") as html_out_file:
-        html_out_file.write(interpreted_html)
+        with open(html_file_name, "w") as html_out_file:
+            html_out_file.write(interpreted_html)
 
     # Create final PDF file
 
@@ -92,14 +104,24 @@ def recompile(notifier):
     f = open("output.pdf",'wb')
     f.write(pdf)
 
-    stdout.write("\rDone.                   ")
-    stdout.flush()
+    if not args.quiet:
+        stdout.write("\rDone.                   ")
+        stdout.flush()
 
 recompile(None)
+
+if not args.watch:
+    if not args.basic:
+        driver.quit()
+    exit(0)
+
+import pyinotify
 
 watch_manager = pyinotify.WatchManager()
 event_notifier = pyinotify.Notifier(watch_manager, recompile)
 
 watch_manager.add_watch(os.path.abspath("."), pyinotify.ALL_EVENTS, rec=True)
 event_notifier.loop()
-driver.quit()
+
+if not args.basic:
+        driver.quit()
