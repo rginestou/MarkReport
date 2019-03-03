@@ -18,6 +18,8 @@ _MarkReport_ takes a markdown file, converts it to HTML (using Go's excellent [b
 
 Just type in your document as a Markdown `.md` file, using special syntax in comments to tell MarkReport how exactly the final PDF should be structured.
 
+### Simple example
+
 Let's take the following example:
 
 ```md
@@ -43,11 +45,16 @@ Open the folder in which the Markdown file above is located. Then run _MarkRepor
 
 The build process completes after a few seconds, and a `output.pdf` file appears in the folder.
 
-The _MarkReport_ script will not stop after the first build, but stay idle until a change is made in the folder, allowing for faster hot-builds.
-
 ![](doc/markreport-example.png)
 
 See the `example` folder for a more detailed demonstration of what _MarkReport_ can achieve.
+
+### Available command line flags
+
+* `--basic` Javascript interpreter is disabled, allowing faster builds but without syntax highlighting or LaTeX support
+* `--watch` The _MarkReport_ script will not stop after the first build, but stay idle and will rebuild t
+as soon as a change is made in the current folder, allowing for faster hot-builds
+* `--quiet` No output will be displayed during the build process
 
 ## Installation instructions
 
