@@ -27,7 +27,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucib
 Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
 Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 
-Writting basic $\LaTeX$ equations is supported:
+Writing basic $\LaTeX$ equations is supported:
 
 $$3x+y=7$$
 
@@ -56,6 +56,47 @@ Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
 <!-- !section -->
 
 <!-- !columns -->
+
+
+<!-- text -->
+
+## Big title on left page, with text on columns
+
+### This is a little subtitle, here to explain what we are talking about
+
+<!-- section -->
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum. Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est. Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+<!-- !section -->
+
+<!-- !text -->
 
 <!-- items -->
 

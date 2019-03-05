@@ -18,6 +18,7 @@ type Data struct {
 	Title    string
 	Subtitle string
 	Cover    string
+	Header   bool
 }
 
 // TOCEntry ...
@@ -28,6 +29,8 @@ type TOCEntry struct {
 }
 
 var commentToHTML = map[string]string{
+	"text":     "<article class='text'>\n",
+	"!text":    "</article>\n",
 	"columns":  "<article class='columns'>\n",
 	"!columns": "</article>\n",
 	"items":    "<article class='items'>\n",
@@ -57,6 +60,7 @@ func main() {
 	}
 
 	var data Data
+	data.Header = true
 	inCover := false
 	inChapter := false
 	coverHTML := ""
@@ -129,6 +133,10 @@ func main() {
 			coverHTML = strings.Replace(coverHTML, "</p>", "\n</address>", -1)
 			coverHTML = strings.Replace(coverHTML, "\n\n", "\n", -1)
 			continue
+		}
+
+		if comment == "no-header" {
+			data.Header = false
 		}
 
 		res = reGroup.FindAllStringSubmatch(comment, -1)

@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="report.css">
   <link rel="stylesheet" href="prism.css">
   <title>{{.Title}}</title>
+  {{if .Header}}
+  <style>
+    @page {
+      @top-left {
+        background: #45aaf2;
+        color: white;
+        content: counter(page);
+        height: 1cm;
+        text-align: center;
+        width: 1cm;
+      }
+
+      @top-center {
+        background: #45aaf2;
+        content: '';
+        display: block;
+        height: .05cm;
+        opacity: .5;
+        width: 100%;
+      }
+
+      @top-right {
+        content: string(heading);
+        font-size: 9pt;
+        height: 1cm;
+        vertical-align: middle;
+        width: 100%;
+      }
+    }
+  </style>
+  {{end}}
   {{if .Cover}}
   <style>
     @page :first {

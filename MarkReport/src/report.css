@@ -62,32 +62,6 @@
     src: url(Lato-Bold.ttf);
 }
 
-@page {
-    @top-left {
-        background: #45aaf2;
-        color: white;
-        content: counter(page);
-        height: 1cm;
-        text-align: center;
-        width: 1cm;
-    }
-    @top-center {
-        background: #45aaf2;
-        content: '';
-        display: block;
-        height: .05cm;
-        opacity: .5;
-        width: 100%;
-    }
-    @top-right {
-        content: string(heading);
-        font-size: 9pt;
-        height: 1cm;
-        vertical-align: middle;
-        width: 100%;
-    }
-}
-
 @page :blank {
     @top-left {
         background: none;
@@ -280,6 +254,14 @@ article#contents ul li a::after {
     color: #45aaf2;
     content: target-counter(attr(href), page);
     float: right;
+}
+
+article.text section {
+    padding-top: 1cm;
+}
+
+article.text section p {
+    text-align: justify;
 }
 
 article.columns section {
