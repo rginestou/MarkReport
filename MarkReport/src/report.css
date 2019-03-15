@@ -167,6 +167,7 @@ article#cover h1 {
     color: #393939;
     font-family: Lato;
     font-size: 44pt;
+    line-height: 46pt;
     font-weight: 400;
     text-transform: uppercase;
     margin: 12cm 3cm 0 3cm;
@@ -275,7 +276,7 @@ article.columns section p {
 }
 
 article.columns section p:first-of-type {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 article.items h3 {

@@ -45,6 +45,8 @@ var commentToHTML = map[string]string{
 	"!section": "</section>\n",
 }
 
+var figNum = 1
+
 func main() {
 	dir := os.Args[1]
 	d, _ := os.Open(dir)
@@ -76,7 +78,7 @@ func main() {
 	scanner := bufio.NewScanner(strings.NewReader(html))
 	re, _ := regexp.Compile(`<!--(.*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
-	reImg, _ := regexp.Compile(`<img src="([^\ ]+) =(\d*)?x(\d*)?`)
+	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="([^\ ]+)")?`)
 	reH, _ := regexp.Compile(`<h(\d)>(.*)</h\d>`)
 	for scanner.Scan() {
 		txt := scanner.Text()
@@ -85,11 +87,10 @@ func main() {
 			res := reImg.FindAllStringSubmatch(txt, -1)
 			if len(res) != 0 {
 				width := res[0][2]
-				height := ""
-				if len(res) > 3 {
-					height = res[0][3]
-				}
-				htmlOut += replaceImage(res[0][1], width, height) + "\n"
+				height := res[0][3]
+				alt := res[0][4]
+
+				htmlOut += replaceImage(res[0][1], width, height, alt) + "\n"
 				continue
 			}
 
@@ -202,10 +203,17 @@ func main() {
 	f.Close()
 }
 
-func replaceImage(src, width, height string) string {
+func replaceImage(src, width, height, alt string) string {
 	h := ""
 	if height != "" {
-		h = "height:" + height + "px"
+		h = "height:" + height + "%"
 	}
-	return "<img src='" + src + "' style='width:" + width + "px;" + h + "'>"
+	str := "<div style='width:" + width + "%;" + h + "'>"
+	str += "<img src='" + src + "' style='width:100%'>"
+	if alt != "" {
+		str += "<p style='text-align:center'><b>Figure " + strconv.Itoa(figNum) + "</b> " + alt + "</p>"
+		figNum++
+	}
+	str += "</div>"
+	return str
 }
