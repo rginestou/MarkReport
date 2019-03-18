@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"html"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -72,23 +73,24 @@ func main() {
 
 	mdContent, _ := ioutil.ReadFile(dir + "/" + mdFile)
 	ext := blackfriday.CommonExtensions & ^blackfriday.Autolink
-	html := string(blackfriday.Run(mdContent, blackfriday.WithExtensions(ext)))
+	htmlStr := string(blackfriday.Run(mdContent, blackfriday.WithExtensions(ext)))
 
 	htmlOut := ""
-	scanner := bufio.NewScanner(strings.NewReader(html))
+	scanner := bufio.NewScanner(strings.NewReader(htmlStr))
 	re, _ := regexp.Compile(`<!--(.*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
-	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="([^\ ]+)")?`)
+	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="(.+)")?`)
 	reH, _ := regexp.Compile(`<h(\d)>(.*)</h\d>`)
 	for scanner.Scan() {
 		txt := scanner.Text()
+		txt = strings.Replace(txt, "&amp;nbsp;", "&nbsp;", -1)
 		if !inCover {
 			// Test for image
 			res := reImg.FindAllStringSubmatch(txt, -1)
 			if len(res) != 0 {
 				width := res[0][2]
 				height := res[0][3]
-				alt := res[0][4]
+				alt := html.UnescapeString(res[0][4])
 
 				htmlOut += replaceImage(res[0][1], width, height, alt) + "\n"
 				continue
