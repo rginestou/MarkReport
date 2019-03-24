@@ -47,7 +47,108 @@ The build process completes after a few seconds, and a `output.pdf` file appears
 
 ![](doc/markreport-example.png)
 
+### With a cover and a Table of Contents
+
+```md
+<!-- title My Report Title -->
+<!-- cover cover.svg -->
+
+# Title</br> <span style="font-size:40px">Smaller part</span> </br> <span class="doc-color">Colored part</span>
+
+John Doe
+Designer
+
+john.doe@my-company.fr
++33 6 01 01 01 01
+https://john-doe.io
+
+<!-- !cover -->
+
+<!-- toc Table of Contents -->
+
+<!-- columns -->
+
+## This is a title
+
+### This is a subtitle
+
+<!-- section -->
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat faucibus vestibulum.
+Mauris varius orci quam. Nam dui mauris, dictum at elementum at, mollis pulvinar est.
+Nunc lobortis pharetra erat, id rutrum lorem malesuada in.
+
+<!-- !section -->
+
+<!-- !columns -->
+```
+
 See the `example` folder for a more detailed demonstration of what _MarkReport_ can achieve.
+
+### Available layout commands
+
+These commands will help you structure your document's layout. They are inserted as comments in the markdown source file.
+
+The title of the documents (meta property):
+
+    <!-- title My Title -->
+
+The document's cover, including a title `Title` and some informations (`Infos`) at the bottom of the page:
+
+    <!-- cover cover.svg -->
+    # Title
+    Infos
+    <!-- !cover -->`
+
+Insert an auto-generated table of contents:
+
+    <!-- toc Table of contents -->
+
+The content of the `sections`' inside will be displayed as regular full-width text:
+
+    <!-- text -->
+    ...
+    <!-- !text -->
+
+The content of the `sections`' inside will be displayed in a two columns fashion:
+
+    <!-- columns -->
+    ...
+    <!-- !columns -->
+
+Encapsulates some content:
+
+    <!-- section -->
+    <!-- !section -->
+
+First paragraph written in bold:
+
+    <!-- section-bold -->
+    <!-- !section -->
+
+Full page colored background marking the beginning of a new chapter:
+
+    <!-- chapter -->
+    <!-- !chapter -->
+
+Vertical list of paragraphs with clear header text:
+
+    <!-- items -->
+    ...
+    <!-- !items -->
+
+Horizontal list of offers, with clear titles:
+
+    <!-- offers -->
+    ...
+    <!-- !offers -->
+
+List of paragraphs with their content indented:
+
+    <!-- specs -->
+    ...
+    <!-- !specs -->
+
 
 ### Available command line flags
 

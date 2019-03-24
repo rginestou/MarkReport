@@ -30,20 +30,22 @@ type TOCEntry struct {
 }
 
 var commentToHTML = map[string]string{
-	"text":     "<article class='text'>\n",
-	"!text":    "</article>\n",
-	"columns":  "<article class='columns'>\n",
-	"!columns": "</article>\n",
-	"items":    "<article class='items'>\n",
-	"!items":   "</article>\n",
-	"offers":   "<article class='offers'>\n",
-	"!offers":  "</article>\n",
-	"chapter":  "<article class='chapter'>\n",
-	"!chapter": "</article>\n",
-	"specs":    "<article class='specs'>\n",
-	"!specs":   "</article>\n",
-	"section":  "<section>\n",
-	"!section": "</section>\n",
+	"text":          "<article class='text'>\n",
+	"!text":         "</article>\n",
+	"columns":       "<article class='columns'>\n",
+	"!columns":      "</article>\n",
+	"items":         "<article class='items'>\n",
+	"!items":        "</article>\n",
+	"offers":        "<article class='offers'>\n",
+	"!offers":       "</article>\n",
+	"chapter":       "<article class='chapter'>\n",
+	"!chapter":      "</article>\n",
+	"specs":         "<article class='specs'>\n",
+	"!specs":        "</article>\n",
+	"section":       "<section>\n",
+	"!section":      "</section>\n",
+	"section-bold":  "<section class='bold'>\n",
+	"!section-bold": "</section>\n",
 }
 
 var figNum = 1
@@ -210,7 +212,7 @@ func replaceImage(src, width, height, alt string) string {
 	if height != "" {
 		h = "height:" + height + "%"
 	}
-	str := "<div style='width:" + width + "%;" + h + "'>"
+	str := "<div style='margin: 0 auto;width:" + width + "%;" + h + "'>"
 	str += "<img src='" + src + "' style='width:100%'>"
 	if alt != "" {
 		str += "<p style='text-align:center'><b>Figure " + strconv.Itoa(figNum) + "</b> " + alt + "</p>"
