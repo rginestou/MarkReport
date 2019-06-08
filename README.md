@@ -18,6 +18,21 @@ _MarkReport_ takes a markdown file, converts it to HTML (using Go's excellent [b
 
 Just type in your document as a Markdown `.md` file, using special syntax in comments to tell MarkReport how exactly the final PDF should be structured.
 
+You may also split your document into several Markdown files, by specifying the order in which to compile these files in a `content.txt` in the main folder.
+
+For instance :
+
+    body.md
+    conclusion.md
+    content.txt
+    intro.md
+
+With `content.txt` :
+
+    intro
+    body
+    conclusion
+
 ### Simple example
 
 Let's take the following example:

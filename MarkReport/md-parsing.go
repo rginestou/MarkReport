@@ -50,19 +50,61 @@ var commentToHTML = map[string]string{
 
 var figNum = 1
 
-func main() {
-	dir := os.Args[1]
+func getMarkdownContent(dir string) []byte {
 	d, _ := os.Open(dir)
 	files, _ := d.Readdir(-1)
 	d.Close()
 
-	mdFile := ""
+	// List md files
+	mdFiles := make(map[string]bool)
 	for _, file := range files {
-		mdFile = file.Name()
+		mdFile := file.Name()
 		if file.Mode().IsRegular() && filepath.Ext(mdFile) == ".md" {
+			mdFiles[mdFile] = true
+		}
+	}
+
+	if len(mdFiles) == 0 {
+		return []byte{}
+	}
+
+	// Look for content.txt
+	mdFilesPicked := []string{}
+	for _, file := range files {
+		if file.Mode().IsRegular() && file.Name() == "content.txt" {
+			f, _ := os.Open(dir + "/" + file.Name())
+
+			scanner := bufio.NewScanner(f)
+			for scanner.Scan() {
+				mdFilesPicked = append(mdFilesPicked, scanner.Text()+".md")
+			}
+
+			f.Close()
 			break
 		}
 	}
+
+	// Choose md files
+	if len(mdFilesPicked) == 0 {
+		for f := range mdFiles {
+			mdFilesPicked = append(mdFilesPicked, f)
+			break
+		}
+	}
+
+	mdContent := ""
+	for _, f := range mdFilesPicked {
+		c, _ := ioutil.ReadFile(dir + "/" + f)
+		mdContent += "\n\n" + string(c)
+	}
+
+	return []byte(mdContent)
+}
+
+func main() {
+	dir := os.Args[1]
+
+	mdContent := getMarkdownContent(dir)
 
 	var data Data
 	data.Header = true
@@ -73,7 +115,6 @@ func main() {
 	toc := make([]TOCEntry, 0)
 	tocName := ""
 
-	mdContent, _ := ioutil.ReadFile(dir + "/" + mdFile)
 	ext := blackfriday.CommonExtensions & ^blackfriday.Autolink
 	htmlStr := string(blackfriday.Run(mdContent, blackfriday.WithExtensions(ext)))
 
