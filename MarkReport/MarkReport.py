@@ -18,6 +18,7 @@ args = parser.parse_args()
 
 from weasyprint import HTML
 
+from shutil import copyfile
 from distutils.dir_util import copy_tree
 from tempfile import gettempdir
 from time import time, sleep
@@ -70,7 +71,9 @@ def recompile(notifier):
     files = glob.glob(tmp_dir + '/*.md')
     for f in files:
         os.remove(f)
-    copy_tree(script_path + "/src", tmp_dir)
+
+    copyfile(script_path + "/base.html", tmp_dir + "/base.html")
+    os.symlink(script_path + "/src", tmp_dir + "/src")
     copy_tree(".", tmp_dir)
 
     # Base HTML Template
