@@ -11,6 +11,8 @@ parser.add_argument('--watch', dest='watch', action='store_true',
     help='Watch the current folder for changes and rebuild automatically')
 parser.add_argument('--quiet', dest='quiet', action='store_true',
     help='Do not output any information')
+parser.add_argument("--timeout", type=int, default=2,
+    help='Page generation timeout')
 parser.set_defaults(watch=False)
 args = parser.parse_args()
 
@@ -50,7 +52,7 @@ if not args.basic:
     options = Options()
     options.headless = True
     driver = webdriver.Firefox(options=options)
-    driver.set_page_load_timeout(2)
+    driver.set_page_load_timeout(args.timeout)
 
 prev_compile_time = 0
 def recompile(notifier):
