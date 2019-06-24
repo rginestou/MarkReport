@@ -134,9 +134,7 @@ html {
     color: #45aaf2;
 }
 
-h2,
-h3,
-h4 {
+h2, h3, h4 {
     color: black;
     font-weight: 400;
 }
@@ -369,8 +367,7 @@ article.offers {
     justify-content: space-between;
 }
 
-article.offers h2,
-article.offers h3 {
+article.offers h2, article.offers h3 {
     width: 100%;
 }
 
@@ -548,11 +545,10 @@ article.specs section#figures #old-tabular {
 table {
     width: 100%;
     border-collapse: collapse;
+    margin: 1.5em 0px;
 }
 
-table,
-th,
-td {
+table, th, td {
     border: 0.5px solid rgb(88, 88, 88);
     padding: 5px;
 }
