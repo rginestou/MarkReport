@@ -1,6 +1,6 @@
 # MarkReport
 
-This little script seamlessly converts Mardown to elegant PDF reports.
+This little script seamlessly converts Markdown to elegant PDF reports.
 
 ![](doc/cover.png)
 
