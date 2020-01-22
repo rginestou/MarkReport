@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"bufio"
 	"html"
 	"io/ioutil"
@@ -94,7 +95,13 @@ func getMarkdownContent(dir string) []byte {
 
 	mdContent := ""
 	for _, f := range mdFilesPicked {
-		c, _ := ioutil.ReadFile(dir + "/" + f)
+		if (f == ".md") {
+			continue
+		}
+		c, err := ioutil.ReadFile(dir + "/" + f)
+		if err != nil {
+			panic(err)
+		}
 		mdContent += "\n\n" + string(c)
 	}
 
@@ -120,7 +127,7 @@ func main() {
 
 	htmlOut := ""
 	scanner := bufio.NewScanner(strings.NewReader(htmlStr))
-	re, _ := regexp.Compile(`<!--(.*)-->`)
+	re, _ := regexp.Compile(`<!--([^>]*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
 	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="(.+)")?`)
 	reH, _ := regexp.Compile(`<h(\d)>(.*)</h\d>`)
@@ -170,6 +177,18 @@ func main() {
 				inChapter = true
 			}
 			continue
+		}
+
+		if comment == "!BUILD_DATETIME" {
+			coverHTML = strings.Replace(coverHTML, "<!-- !BUILD_DATETIME -->", "{{template \"BUILD_DATETIME\" }}", -1)
+		}
+
+		if comment == "!BUILD_DATE" {
+			coverHTML = strings.Replace(coverHTML, "<!-- !BUILD_DATE -->", "{{template \"BUILD_DATE\" }}", -1)
+		}
+
+		if comment == "!BUILD_VERSION" {
+			coverHTML = strings.Replace(coverHTML, "<!-- !BUILD_VERSION -->", "{{template \"BUILD_VERSION\" }}", -1)
 		}
 
 		if comment == "!cover" {
@@ -232,6 +251,10 @@ func main() {
 	}
 
 	htmlOut = "{{define \"content\"}}\n" + coverHTML + tocHTML + htmlOut + "{{end}}\n"
+	htmlOut = htmlOut + "{{define \"BUILD_DATETIME\"}}" + time.Now().Format(time.RFC3339) + " {{end}}\n"
+	htmlOut = htmlOut + "{{define \"BUILD_DATE\"}}" + time.Now().Format("2006-01-02") + " {{end}}\n"
+	htmlOut = htmlOut + "{{define \"BUILD_VERSION\"}} " + os.Getenv("BUILD_VERSION") + " {{end}}\n"
+
 
 	// Makdown HTML
 	f, _ := os.Create(dir + "/md-output.html")
