@@ -23,6 +23,7 @@ from distutils.dir_util import copy_tree
 from tempfile import gettempdir
 from time import time, sleep
 from sys import stdout, stderr
+import subprocess
 import re, glob, os
 
 # Check directory
@@ -84,12 +85,7 @@ def recompile(notifier):
 
     # Markdown parsing
 
-    md = ""
-    md_file_name = glob.glob(tmp_dir + "*.md")[0]
-    with open(md_file_name, "r") as md_file:
-        md = md_file.readlines()
-
-    os.system(script_path + "/md-parsing " + tmp_dir)
+    subprocess.check_output(script_path + "/md-parsing " + tmp_dir, shell=True)
     html_file_name = tmp_dir + "output.html"
 
     # Interpret JS code
