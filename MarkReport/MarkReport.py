@@ -50,10 +50,16 @@ os.makedirs(tmp_dir, exist_ok=True)
 if not args.basic:
     from selenium import webdriver
     from selenium.webdriver.firefox.options import Options
+    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
     options = Options()
     options.headless = True
-    driver = webdriver.Firefox(options=options)
+    options.log.level = "trace"
+
+    d = DesiredCapabilities.FIREFOX
+    d['loggingPrefs'] = { 'browser':'ALL' }
+
+    driver = webdriver.Firefox(options=options,capabilities=d)
     driver.set_page_load_timeout(args.timeout)
 
 prev_compile_time = 0
