@@ -18,4 +18,9 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: Linux",
     ],
+    install_requires=[
+        'weasyprint',
+        'pyinotify',
+        'selenium',
+    ],
 )
