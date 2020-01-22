@@ -74,7 +74,8 @@ def recompile(notifier):
         os.remove(f)
 
     copyfile(script_path + "/base.html", tmp_dir + "/base.html")
-    os.symlink(script_path + "/src", tmp_dir + "/src")
+    if not os.path.islink(tmp_dir + "/src"):
+        os.symlink(script_path + "/src", tmp_dir + "/src")
     copy_tree(".", tmp_dir)
 
     # Base HTML Template
