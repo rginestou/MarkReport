@@ -1,6 +1,7 @@
 package main
 
 import (
+//	"fmt"
 	"time"
 	"bufio"
 	"html"
@@ -13,6 +14,7 @@ import (
 	"text/template"
 
 	blackfriday "gopkg.in/russross/blackfriday.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // Data ...
@@ -52,25 +54,34 @@ var commentToHTML = map[string]string{
 var figNum = 1
 
 // split front matter from markdown (see jekyll)
-func splitMarkDownFrontMatter(input string) (markdown string, front_matter string) {
+func splitMarkDownFrontMatter(input string) (markdown string, front_matter *Data) {
 	re, _ := regexp.Compile(`---`)
 	res := re.FindAllStringSubmatchIndex(input, -1)
 
 	// must contain at least two occurances of ---
 	if len(res) < 2 {
-		return input, string("")
+		return input, nil
 	}
 
 	// it must be on the begining of the document
 	if res[0][0] != 0 {
-		return input, string("")
+		return input, nil
 	}
 	front := input[res[0][1]:res[1][0]]
+
+	yamlData := Data{}
+	yamlData.Header = true // default value
+
+	err := yaml.Unmarshal([]byte(front), &yamlData)
+	if err != nil {
+		return input, nil
+	}
+
 	md := input[res[1][1]:]
-	return md, front
+	return md, &yamlData
 }
 
-func getMarkdownContent(dir string) []byte {
+func getMarkdownContent(dir string) ([]byte, Data) {
 	d, _ := os.Open(dir)
 	files, _ := d.Readdir(-1)
 	d.Close()
@@ -85,7 +96,7 @@ func getMarkdownContent(dir string) []byte {
 	}
 
 	if len(mdFiles) == 0 {
-		return []byte{}
+		return []byte{}, Data{}
 	}
 
 	// Look for content.txt
@@ -113,6 +124,7 @@ func getMarkdownContent(dir string) []byte {
 	}
 
 	mdContent := ""
+	data := Data{}
 	for _, f := range mdFilesPicked {
 		if (f == ".md") {
 			continue
@@ -121,11 +133,14 @@ func getMarkdownContent(dir string) []byte {
 		if err != nil {
 			panic(err)
 		}
-		cMD, _ := splitMarkDownFrontMatter(string(c))
+		cMD, cFrontMatter := splitMarkDownFrontMatter(string(c))
+		if cFrontMatter != nil {
+			data = *cFrontMatter
+		}
 		mdContent += "\n\n" + cMD
 	}
 
-	return []byte(mdContent)
+	return []byte(mdContent), data
 }
 
 func main() {
@@ -136,10 +151,10 @@ func main() {
 	}
 	dir := os.Args[1]
 
-	mdContent := getMarkdownContent(dir)
+	mdContent, data := getMarkdownContent(dir)
 
-	var data Data
-	data.Header = true
+//	fmt.Printf("data: %v\n\n", data)
+
 	inCover := false
 	inChapter := false
 	coverHTML := ""
@@ -290,7 +305,10 @@ func main() {
 
 	f, _ = os.Create(dir + "/output.html")
 	w = bufio.NewWriter(f)
-	t, _ := template.ParseFiles(dir+"/base.html", dir+"/md-output.html")
+	t, err := template.ParseFiles(dir+"/base.html", dir+"/md-output.html")
+	if err != nil {
+		panic(err)
+	}
 	t.ExecuteTemplate(w, "base", data)
 	w.Flush()
 	f.Close()
