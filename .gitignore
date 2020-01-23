@@ -3,3 +3,5 @@
 dist
 build
 *.egg-info
+geckodriver.log
+md-parsing

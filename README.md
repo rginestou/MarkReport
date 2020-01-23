@@ -180,10 +180,16 @@ Some Python packages are needed to run the program. It's easy to get them with p
     pip3 install pyinotify
     pip3 install selenium
 
-The firefow driver is used to interpret JavaScript inside the HTML page generated from Markdown. You need to grab `geckodriver` in order to make it work:
+Compilation of md-parsing
+
+    export GOPATH=~/.go
+    go get gopkg.in/russross/blackfriday.v2
+    go build -i md-parsing.go
+
+The firefox driver is used to interpret JavaScript inside the HTML page generated from Markdown. You need to grab `geckodriver` in order to make it work:
 
     wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
     tar -xvzf geckodriver*
     sudo mv geckodriver /usr/local/bin/
 
-You're now reeady to go.
+You're now ready to go.

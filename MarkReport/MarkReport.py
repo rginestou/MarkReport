@@ -23,6 +23,7 @@ from distutils.dir_util import copy_tree
 from tempfile import gettempdir
 from time import time, sleep
 from sys import stdout, stderr
+import subprocess
 import re, glob, os
 
 # Check directory
@@ -49,10 +50,16 @@ os.makedirs(tmp_dir, exist_ok=True)
 if not args.basic:
     from selenium import webdriver
     from selenium.webdriver.firefox.options import Options
+    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
     options = Options()
     options.headless = True
-    driver = webdriver.Firefox(options=options)
+    options.log.level = "trace"
+
+    d = DesiredCapabilities.FIREFOX
+    d['loggingPrefs'] = { 'browser':'ALL' }
+
+    driver = webdriver.Firefox(options=options,capabilities=d)
     driver.set_page_load_timeout(args.timeout)
 
 prev_compile_time = 0
@@ -73,7 +80,8 @@ def recompile(notifier):
         os.remove(f)
 
     copyfile(script_path + "/base.html", tmp_dir + "/base.html")
-    os.symlink(script_path + "/src", tmp_dir + "/src")
+    if not os.path.islink(tmp_dir + "/src"):
+        os.symlink(script_path + "/src", tmp_dir + "/src")
     copy_tree(".", tmp_dir)
 
     # Base HTML Template
@@ -84,12 +92,7 @@ def recompile(notifier):
 
     # Markdown parsing
 
-    md = ""
-    md_file_name = glob.glob(tmp_dir + "*.md")[0]
-    with open(md_file_name, "r") as md_file:
-        md = md_file.readlines()
-
-    os.system(script_path + "/md-parsing " + tmp_dir)
+    subprocess.check_output(script_path + "/md-parsing " + tmp_dir, shell=True)
     html_file_name = tmp_dir + "output.html"
 
     # Interpret JS code
