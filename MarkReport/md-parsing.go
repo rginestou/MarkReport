@@ -81,7 +81,7 @@ func splitMarkDownFrontMatter(input string) (markdown string, front_matter *Data
 	return md, &yamlData
 }
 
-func getMarkdownContent(dir string) ([]byte, Data) {
+func getMarkdownContent(dir string) ([]byte, *Data) {
 	d, _ := os.Open(dir)
 	files, _ := d.Readdir(-1)
 	d.Close()
@@ -96,7 +96,7 @@ func getMarkdownContent(dir string) ([]byte, Data) {
 	}
 
 	if len(mdFiles) == 0 {
-		return []byte{}, Data{}
+		return []byte{}, nil
 	}
 
 	// Look for content.txt
@@ -124,7 +124,8 @@ func getMarkdownContent(dir string) ([]byte, Data) {
 	}
 
 	mdContent := ""
-	data := Data{}
+	var data *Data
+
 	for _, f := range mdFilesPicked {
 		if (f == ".md") {
 			continue
@@ -135,7 +136,7 @@ func getMarkdownContent(dir string) ([]byte, Data) {
 		}
 		cMD, cFrontMatter := splitMarkDownFrontMatter(string(c))
 		if cFrontMatter != nil {
-			data = *cFrontMatter
+			data = cFrontMatter
 		}
 		mdContent += "\n\n" + cMD
 	}
@@ -151,7 +152,14 @@ func main() {
 	}
 	dir := os.Args[1]
 
-	mdContent, data := getMarkdownContent(dir)
+	var data Data
+	data.Header = true
+
+	mdContent, yamlData := getMarkdownContent(dir)
+
+	if yamlData != nil {
+		data = *yamlData
+	}
 
 //	fmt.Printf("data: %v\n\n", data)
 
