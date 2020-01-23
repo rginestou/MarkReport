@@ -51,6 +51,25 @@ var commentToHTML = map[string]string{
 
 var figNum = 1
 
+// split front matter from markdown (see jekyll)
+func splitMarkDownFrontMatter(input string) (markdown string, front_matter string) {
+	re, _ := regexp.Compile(`---`)
+	res := re.FindAllStringSubmatchIndex(input, -1)
+
+	// must contain at least two occurances of ---
+	if len(res) < 2 {
+		return input, string("")
+	}
+
+	// it must be on the begining of the document
+	if res[0][0] != 0 {
+		return input, string("")
+	}
+	front := input[res[0][1]:res[1][0]]
+	md := input[res[1][1]:]
+	return md, front
+}
+
 func getMarkdownContent(dir string) []byte {
 	d, _ := os.Open(dir)
 	files, _ := d.Readdir(-1)
@@ -102,13 +121,19 @@ func getMarkdownContent(dir string) []byte {
 		if err != nil {
 			panic(err)
 		}
-		mdContent += "\n\n" + string(c)
+		cMD, _ := splitMarkDownFrontMatter(string(c))
+		mdContent += "\n\n" + cMD
 	}
 
 	return []byte(mdContent)
 }
 
 func main() {
+
+	if (len(os.Args) != 2) {
+		print("usage: " + os.Args[0] + " directory\n")
+		return
+	}
 	dir := os.Args[1]
 
 	mdContent := getMarkdownContent(dir)
