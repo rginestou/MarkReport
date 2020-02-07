@@ -1,7 +1,7 @@
 package main
 
 import (
-//	"fmt"
+	"fmt"
 	"time"
 	"bufio"
 	"html"
@@ -126,6 +126,8 @@ func getMarkdownContent(dir string) ([]byte, *Data) {
 	mdContent := ""
 	var data *Data
 
+	reMDImg, _ := regexp.Compile(`!\[\]\(([^\ #)]*)[^\)]*\)`)
+
 	for _, f := range mdFilesPicked {
 		if (f == ".md") {
 			continue
@@ -138,6 +140,28 @@ func getMarkdownContent(dir string) ([]byte, *Data) {
 		if cFrontMatter != nil {
 			data = cFrontMatter
 		}
+
+		relpath := dir + "/" + filepath.Dir(f)
+
+		res := reMDImg.FindAllStringSubmatch(cMD, -1)
+		indexes := reMDImg.FindAllStringSubmatchIndex(cMD, -1)
+
+		indexChange := 0
+		for i, item := range res {
+			index := indexes[i]
+			imgFilename := item[1]
+			destFilename := relpath + "/" + imgFilename
+			startIndex := index[2] + indexChange
+			endIndex := index[3] + indexChange
+			cMD = cMD[:startIndex] + destFilename + cMD[endIndex:]
+			indexChange = indexChange + len(destFilename) - (index[3] - index[2])
+			if _, err := os.Stat(destFilename); os.IsNotExist(err) {
+				err_msg := fmt.Sprintf("file \"%v\" does not exist\n", destFilename)
+				panic(err_msg)
+			}
+
+		}
+
 		mdContent += "\n\n" + cMD
 	}
 
@@ -177,20 +201,26 @@ func main() {
 	scanner := bufio.NewScanner(strings.NewReader(htmlStr))
 	re, _ := regexp.Compile(`<!--([^>]*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
-	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="(.+)")?`)
+	reImg, _ := regexp.Compile(`<img[^>]*src="([^#\"]+)(#?[^"]*)?(?: =(\d*)?x(\d*)?)?"[^>]*(?: alt="(.+)")?[^>]*>`)
+
+
 	reH, _ := regexp.Compile(`<h(\d)>(.*)</h\d>`)
 	for scanner.Scan() {
 		txt := scanner.Text()
 		txt = strings.Replace(txt, "&amp;nbsp;", "&nbsp;", -1)
 		if !inCover {
+
 			// Test for image
 			res := reImg.FindAllStringSubmatch(txt, -1)
+			for _, i := range res {
+				filename := i[1]
+				filenameAnchor := i[2]
+				width := i[3]
+				height := i[4]
+				alt := html.UnescapeString(i[5])
+				htmlOut += replaceImage(filename+filenameAnchor, width, height, alt) + "\n"
+			}
 			if len(res) != 0 {
-				width := res[0][2]
-				height := res[0][3]
-				alt := html.UnescapeString(res[0][4])
-
-				htmlOut += replaceImage(res[0][1], width, height, alt) + "\n"
 				continue
 			}
 
