@@ -184,6 +184,7 @@ Compilation of md-parsing
 
     export GOPATH=~/.go
     go get gopkg.in/russross/blackfriday.v2
+    go get gopkg.in/yaml.v2
     go build -i md-parsing.go
 
 The firefox driver is used to interpret JavaScript inside the HTML page generated from Markdown. You need to grab `geckodriver` in order to make it work:

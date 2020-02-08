@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 	"bufio"
 	"html"
@@ -13,6 +14,7 @@ import (
 	"text/template"
 
 	blackfriday "gopkg.in/russross/blackfriday.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // Data ...
@@ -51,7 +53,35 @@ var commentToHTML = map[string]string{
 
 var figNum = 1
 
-func getMarkdownContent(dir string) []byte {
+// split front matter from markdown (see jekyll)
+func splitMarkDownFrontMatter(input string) (markdown string, front_matter *Data) {
+	re, _ := regexp.Compile(`---`)
+	res := re.FindAllStringSubmatchIndex(input, -1)
+
+	// must contain at least two occurances of ---
+	if len(res) < 2 {
+		return input, nil
+	}
+
+	// it must be on the begining of the document
+	if res[0][0] != 0 {
+		return input, nil
+	}
+	front := input[res[0][1]:res[1][0]]
+
+	yamlData := Data{}
+	yamlData.Header = true // default value
+
+	err := yaml.Unmarshal([]byte(front), &yamlData)
+	if err != nil {
+		return input, nil
+	}
+
+	md := input[res[1][1]:]
+	return md, &yamlData
+}
+
+func getMarkdownContent(dir string) ([]byte, *Data) {
 	d, _ := os.Open(dir)
 	files, _ := d.Readdir(-1)
 	d.Close()
@@ -66,7 +96,7 @@ func getMarkdownContent(dir string) []byte {
 	}
 
 	if len(mdFiles) == 0 {
-		return []byte{}
+		return []byte{}, nil
 	}
 
 	// Look for content.txt
@@ -94,6 +124,10 @@ func getMarkdownContent(dir string) []byte {
 	}
 
 	mdContent := ""
+	var data *Data
+
+	reMDImg, _ := regexp.Compile(`!\[\]\(([^\ #)]*)[^\)]*\)`)
+
 	for _, f := range mdFilesPicked {
 		if (f == ".md") {
 			continue
@@ -102,19 +136,57 @@ func getMarkdownContent(dir string) []byte {
 		if err != nil {
 			panic(err)
 		}
-		mdContent += "\n\n" + string(c)
+		cMD, cFrontMatter := splitMarkDownFrontMatter(string(c))
+		if cFrontMatter != nil {
+			data = cFrontMatter
+		}
+
+		relpath := dir + "/" + filepath.Dir(f)
+
+		res := reMDImg.FindAllStringSubmatch(cMD, -1)
+		indexes := reMDImg.FindAllStringSubmatchIndex(cMD, -1)
+
+		indexChange := 0
+		for i, item := range res {
+			index := indexes[i]
+			imgFilename := item[1]
+			destFilename := relpath + "/" + imgFilename
+			startIndex := index[2] + indexChange
+			endIndex := index[3] + indexChange
+			cMD = cMD[:startIndex] + destFilename + cMD[endIndex:]
+			indexChange = indexChange + len(destFilename) - (index[3] - index[2])
+			if _, err := os.Stat(destFilename); os.IsNotExist(err) {
+				err_msg := fmt.Sprintf("file \"%v\" does not exist\n", destFilename)
+				panic(err_msg)
+			}
+
+		}
+
+		mdContent += "\n\n" + cMD
 	}
 
-	return []byte(mdContent)
+	return []byte(mdContent), data
 }
 
 func main() {
-	dir := os.Args[1]
 
-	mdContent := getMarkdownContent(dir)
+	if (len(os.Args) != 2) {
+		print("usage: " + os.Args[0] + " directory\n")
+		return
+	}
+	dir := os.Args[1]
 
 	var data Data
 	data.Header = true
+
+	mdContent, yamlData := getMarkdownContent(dir)
+
+	if yamlData != nil {
+		data = *yamlData
+	}
+
+//	fmt.Printf("data: %v\n\n", data)
+
 	inCover := false
 	inChapter := false
 	coverHTML := ""
@@ -129,20 +201,26 @@ func main() {
 	scanner := bufio.NewScanner(strings.NewReader(htmlStr))
 	re, _ := regexp.Compile(`<!--([^>]*)-->`)
 	reGroup, _ := regexp.Compile(`(\w+) (.*)?`)
-	reImg, _ := regexp.Compile(`<img src="([^\ ]+)(?: =(\d*)?x(\d*)?)?"(?: alt="(.+)")?`)
+	reImg, _ := regexp.Compile(`<img[^>]*src="([^#\"]+)(#?[^"]*)?(?: =(\d*)?x(\d*)?)?"[^>]*(?: alt="(.+)")?[^>]*>`)
+
+
 	reH, _ := regexp.Compile(`<h(\d)>(.*)</h\d>`)
 	for scanner.Scan() {
 		txt := scanner.Text()
 		txt = strings.Replace(txt, "&amp;nbsp;", "&nbsp;", -1)
 		if !inCover {
+
 			// Test for image
 			res := reImg.FindAllStringSubmatch(txt, -1)
+			for _, i := range res {
+				filename := i[1]
+				filenameAnchor := i[2]
+				width := i[3]
+				height := i[4]
+				alt := html.UnescapeString(i[5])
+				htmlOut += replaceImage(filename+filenameAnchor, width, height, alt) + "\n"
+			}
 			if len(res) != 0 {
-				width := res[0][2]
-				height := res[0][3]
-				alt := html.UnescapeString(res[0][4])
-
-				htmlOut += replaceImage(res[0][1], width, height, alt) + "\n"
 				continue
 			}
 
@@ -265,7 +343,10 @@ func main() {
 
 	f, _ = os.Create(dir + "/output.html")
 	w = bufio.NewWriter(f)
-	t, _ := template.ParseFiles(dir+"/base.html", dir+"/md-output.html")
+	t, err := template.ParseFiles(dir+"/base.html", dir+"/md-output.html")
+	if err != nil {
+		panic(err)
+	}
 	t.ExecuteTemplate(w, "base", data)
 	w.Flush()
 	f.Close()
