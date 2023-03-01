@@ -1,7 +1,6 @@
 package main
 
 import (
-	"time"
 	"bufio"
 	"html"
 	"io/ioutil"
@@ -11,8 +10,9 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+	"time"
 
-	blackfriday "gopkg.in/russross/blackfriday.v2"
+	blackfriday "github.com/russross/blackfriday/v2"
 )
 
 // Data ...
@@ -95,7 +95,7 @@ func getMarkdownContent(dir string) []byte {
 
 	mdContent := ""
 	for _, f := range mdFilesPicked {
-		if (f == ".md") {
+		if f == ".md" {
 			continue
 		}
 		c, err := ioutil.ReadFile(dir + "/" + f)
@@ -254,7 +254,6 @@ func main() {
 	htmlOut = htmlOut + "{{define \"BUILD_DATETIME\"}}" + time.Now().Format(time.RFC3339) + " {{end}}\n"
 	htmlOut = htmlOut + "{{define \"BUILD_DATE\"}}" + time.Now().Format("2006-01-02") + " {{end}}\n"
 	htmlOut = htmlOut + "{{define \"BUILD_VERSION\"}} " + os.Getenv("BUILD_VERSION") + " {{end}}\n"
-
 
 	// Makdown HTML
 	f, _ := os.Create(dir + "/md-output.html")

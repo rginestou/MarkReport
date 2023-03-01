@@ -183,8 +183,8 @@ Some Python packages are needed to run the program. It's easy to get them with p
 Compilation of md-parsing
 
     export GOPATH=~/.go
-    go get gopkg.in/russross/blackfriday.v2
-    go build -i md-parsing.go
+    go get ./...
+    go build -i MarkReport/md-parsing.go
 
 The firefox driver is used to interpret JavaScript inside the HTML page generated from Markdown. You need to grab `geckodriver` in order to make it work:
 
